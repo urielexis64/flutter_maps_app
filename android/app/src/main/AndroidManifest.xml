@@ -1,5 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter_maps_app">
+   <!-- Internet -->
+   <uses-permission android:name="android.permission.INTERNET"/>
+   
+   <!-- State -->
+   <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+   <uses-permission android:name="android.permission.WAKE_LOCK" />
+   <!-- Permissions options for the `location` group -->
+   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+   <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
    <application
         android:label="flutter_maps_app"
         android:icon="@mipmap/ic_launcher">
