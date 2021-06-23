@@ -12,22 +12,34 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   @override
   void initState() {
-    context.read<MyLocationBloc>().startTracking();
+    BlocProvider.of<MyLocationBloc>(context).startTracking();
     super.initState();
   }
 
   @override
   void dispose() {
-    context.read<MyLocationBloc>().cancelTracking();
+    BlocProvider.of<MyLocationBloc>(context).cancelTracking();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('MapPage'),
+      body: BlocBuilder<MyLocationBloc, MyLocationState>(
+        builder: (context, state) => createMap(state),
       ),
     );
+  }
+
+  Widget createMap(MyLocationState state) {
+    if (!state.locationExists) {
+      return Center(
+        child: Column(
+          children: [Text('Getting location...'), CircularProgressIndicator()],
+        ),
+      );
+    }
+    return Text(
+        'Lat: ${state.location!.latitude}, Lng: ${state.location!.longitude} ');
   }
 }
