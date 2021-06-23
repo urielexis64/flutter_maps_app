@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maps_app/bloc/my_location/my_location_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -39,7 +40,11 @@ class _MapPageState extends State<MapPage> {
         ),
       );
     }
-    return Text(
-        'Lat: ${state.location!.latitude}, Lng: ${state.location!.longitude} ');
+    final cameraPosition = CameraPosition(target: state.location, zoom: 20);
+    return GoogleMap(
+      initialCameraPosition: cameraPosition,
+      myLocationEnabled: true,
+      myLocationButtonEnabled: false,
+    );
   }
 }
