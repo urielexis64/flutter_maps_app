@@ -5,7 +5,7 @@ import 'package:flutter_maps_app/pages/map_page.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class LoadingPage extends StatefulWidget with WidgetsBindingObserver {
+class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key}) : super(key: key);
 
   @override
