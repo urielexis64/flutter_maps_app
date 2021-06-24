@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_maps_app/themes/colliers_canada_map.dart';
+import 'package:flutter_maps_app/themes/uber_map.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 
@@ -15,6 +18,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   void initMap(GoogleMapController controller) {
     if (!state.loadedMap) {
       this._mapController = controller;
+
+      this._mapController.setMapStyle(jsonEncode(colliersCanadaMap));
+
       add(OnLoadedMap());
     }
   }
@@ -25,7 +31,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   ) async* {
     if (event is OnLoadedMap) {
       yield state.copyWith(loadedMap: true);
-      print('llegooooo');
     }
   }
 }
