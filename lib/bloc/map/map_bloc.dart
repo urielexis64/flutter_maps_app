@@ -25,6 +25,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     }
   }
 
+  void moveCamera(LatLng destination) {
+    final cameraUpdate = CameraUpdate.newLatLng(destination);
+    this._mapController.animateCamera(cameraUpdate);
+  }
+
   @override
   Stream<MapState> mapEventToState(
     MapEvent event,
