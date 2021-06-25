@@ -3,9 +3,22 @@ part of 'map_bloc.dart';
 @immutable
 class MapState {
   final bool loadedMap;
+  final bool drawPath;
 
-  MapState({this.loadedMap = false});
+  final Map<String, Polyline> polylines;
 
-  MapState copyWith({bool? loadedMap}) =>
-      MapState(loadedMap: loadedMap ?? this.loadedMap);
+  MapState(
+      {this.loadedMap = false,
+      this.drawPath = true,
+      Map<String, Polyline>? polylines})
+      : this.polylines = polylines ?? Map();
+
+  MapState copyWith(
+          {bool? loadedMap,
+          bool? drawPath,
+          Map<String, Polyline>? polylines}) =>
+      MapState(
+          loadedMap: loadedMap ?? this.loadedMap,
+          polylines: polylines ?? this.polylines,
+          drawPath: drawPath ?? this.drawPath);
 }

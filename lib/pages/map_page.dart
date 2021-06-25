@@ -46,13 +46,20 @@ class _MapPageState extends State<MapPage> {
         ),
       );
     }
+
+    final mapBloc = context.watch<MapBloc>();
+
+    mapBloc.add(OnLocationUpdate(state.location));
+
     final cameraPosition = CameraPosition(target: state.location, zoom: 20);
+
     return GoogleMap(
       initialCameraPosition: cameraPosition,
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       onMapCreated: context.read<MapBloc>().initMap,
+      polylines: mapBloc.state.polylines.values.toSet(),
     );
   }
 }
