@@ -17,7 +17,6 @@ class MyLocationBloc extends Bloc<MyLocationEvent, MyLocationState> {
     Geolocator.getPositionStream(
             desiredAccuracy: LocationAccuracy.high, distanceFilter: 10)
         .listen((Position position) {
-      print(position);
       add(OnChangeLocation(LatLng(position.latitude, position.longitude)));
     });
   }

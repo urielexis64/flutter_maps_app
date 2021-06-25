@@ -33,7 +33,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   void moveCamera(LatLng destination) {
     final cameraUpdate = CameraUpdate.newLatLng(destination);
-    this._mapController.animateCamera(cameraUpdate);
+    this._mapController.moveCamera(cameraUpdate);
+    // very slow animation
+    //this._mapController.animateCamera(cameraUpdate);
   }
 
   @override
@@ -46,10 +48,16 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       yield* _onLocationUpdate(event);
     } else if (event is OnMarkRoute) {
       yield* _onMarkRoute(event);
+    } else if (event is OnFollowLocation) {
+      yield* _onFollowLocation(event);
     }
   }
 
   Stream<MapState> _onLocationUpdate(OnLocationUpdate event) async* {
+    if (state.followLocation) {
+      moveCamera(event.location);
+    }
+
     final points = [...this._myRoute.points, event.location];
     this._myRoute = this._myRoute.copyWith(pointsParam: points);
 
@@ -71,5 +79,12 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     yield state.copyWith(
         drawPath: !state.drawPath, polylines: currentPolylines);
+  }
+
+  Stream<MapState> _onFollowLocation(OnFollowLocation event) async* {
+    if (!state.followLocation) {
+      this.moveCamera(this._myRoute.points[this._myRoute.points.length - 1]);
+    }
+    yield state.copyWith(followLocation: !state.followLocation);
   }
 }
