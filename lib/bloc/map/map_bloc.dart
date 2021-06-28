@@ -50,7 +50,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     } else if (event is OnFollowLocation) {
       yield* _onFollowLocation(event);
     } else if (event is OnMapMoved) {
-      print(event.mapCenter);
       yield state.copyWith(centralLocation: event.mapCenter);
     }
   }

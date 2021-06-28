@@ -28,8 +28,13 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MyLocationBloc, MyLocationState>(
-        builder: (context, state) => createMap(state),
+      body: Stack(
+        children: [
+          BlocBuilder<MyLocationBloc, MyLocationState>(
+            builder: (context, state) => createMap(state),
+          ),
+          Positioned(top: 15, child: SearchBar())
+        ],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -51,7 +56,7 @@ class _MapPageState extends State<MapPage> {
 
     mapBloc.add(OnLocationUpdate(state.location));
 
-    final cameraPosition = CameraPosition(target: state.location, zoom: 20);
+    final cameraPosition = CameraPosition(target: state.location, zoom: 16);
 
     return GoogleMap(
       initialCameraPosition: cameraPosition,

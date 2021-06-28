@@ -5,3 +5,4 @@ import 'package:flutter_maps_app/bloc/my_location/my_location_bloc.dart';
 part 'location_button.dart';
 part 'my_route_button.dart';
 part 'follow_location_button.dart';
+part 'searchbar.dart';
