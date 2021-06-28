@@ -7,7 +7,9 @@ class SearchBar extends StatelessWidget {
 
     return SafeArea(
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          showSearch(context: context, delegate: SearchDestination());
+        },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 30),
           width: size.width,
