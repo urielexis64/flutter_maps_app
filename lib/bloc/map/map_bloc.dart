@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_maps_app/themes/colliers_canada_map.dart';
-import 'package:flutter_maps_app/themes/uber_map.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 
@@ -50,6 +49,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       yield* _onMarkRoute(event);
     } else if (event is OnFollowLocation) {
       yield* _onFollowLocation(event);
+    } else if (event is OnMapMoved) {
+      print(event.mapCenter);
+      yield state.copyWith(centralLocation: event.mapCenter);
     }
   }
 
