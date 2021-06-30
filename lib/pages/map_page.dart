@@ -33,7 +33,7 @@ class _MapPageState extends State<MapPage> {
           BlocBuilder<MyLocationBloc, MyLocationState>(
             builder: (context, state) => createMap(state),
           ),
-          //Positioned(top: 15, child: SearchBar()),
+          Positioned(top: 15, child: SearchBar()),
           ManualMarker(),
         ],
       ),
