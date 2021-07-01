@@ -6,6 +6,8 @@ import 'package:flutter_maps_app/bloc/my_location/my_location_bloc.dart';
 import 'package:flutter_maps_app/bloc/search/search_bloc.dart';
 import 'package:flutter_maps_app/models/search_result.dart';
 import 'package:flutter_maps_app/search/search_destination.dart';
+import 'package:flutter_maps_app/services/traffic_service.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart' as Poly;
 
 part 'location_button.dart';
 part 'my_route_button.dart';

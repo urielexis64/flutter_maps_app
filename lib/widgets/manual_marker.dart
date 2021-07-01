@@ -60,7 +60,9 @@ class _BuildManualMarker extends StatelessWidget {
             left: 40,
             child: FadeIn(
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  this.calculateDestination(context);
+                },
                 minWidth: size.width - 140,
                 child: Text(
                   'Confirm',
@@ -75,5 +77,21 @@ class _BuildManualMarker extends StatelessWidget {
             ))
       ],
     );
+  }
+
+  void calculateDestination(BuildContext context) async {
+    final trafficService = TrafficService();
+    final start = context.read<MyLocationBloc>().state.location;
+    final end = context.read<MapBloc>().state.centralLocation;
+    final trafficResponse = await trafficService.getCoords(start, end!);
+
+    final geometry = trafficResponse.routes[0].geometry;
+    final duration = trafficResponse.routes[0].duration;
+    final distance = trafficResponse.routes[0].distance;
+
+    // Decode geometry points
+    final points = Poly.PolylinePoints().decodePolyline(geometry);
+
+    final temp = points;
   }
 }
