@@ -48,6 +48,7 @@ class _MapPageState extends State<MapPage> {
     if (!state.locationExists) {
       return Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [Text('Getting location...'), CircularProgressIndicator()],
         ),
       );
@@ -57,17 +58,21 @@ class _MapPageState extends State<MapPage> {
 
     mapBloc.add(OnLocationUpdate(state.location));
 
-    final cameraPosition = CameraPosition(target: state.location, zoom: 16);
+    final cameraPosition = CameraPosition(target: state.location, zoom: 15);
 
-    return GoogleMap(
-      initialCameraPosition: cameraPosition,
-      myLocationEnabled: true,
-      myLocationButtonEnabled: false,
-      zoomControlsEnabled: false,
-      onMapCreated: context.read<MapBloc>().initMap,
-      polylines: mapBloc.state.polylines.values.toSet(),
-      onCameraMove: (position) {
-        mapBloc.add(OnMapMoved(position.target));
+    return BlocBuilder<MapBloc, MapState>(
+      builder: (context, state) {
+        return GoogleMap(
+          initialCameraPosition: cameraPosition,
+          myLocationEnabled: true,
+          myLocationButtonEnabled: false,
+          zoomControlsEnabled: false,
+          onMapCreated: context.read<MapBloc>().initMap,
+          polylines: mapBloc.state.polylines.values.toSet(),
+          onCameraMove: (position) {
+            mapBloc.add(OnMapMoved(position.target));
+          },
+        );
       },
     );
   }

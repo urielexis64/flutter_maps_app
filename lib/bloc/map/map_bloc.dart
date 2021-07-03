@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart' show Colors;
-import 'package:flutter_maps_app/themes/colliers_canada_map.dart';
+import 'package:flutter_maps_app/themes/uber_map.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 
@@ -18,13 +18,17 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   //Polylines
   Polyline _myRoute = Polyline(
-      polylineId: PolylineId('myRoute'), width: 5, color: Colors.black87);
+      polylineId: PolylineId('myRoute'), width: 5, color: Colors.redAccent);
+  Polyline _myDestinationRoute = Polyline(
+      polylineId: PolylineId('myDestinationRoute'),
+      width: 5,
+      color: Colors.green);
 
   void initMap(GoogleMapController controller) {
     if (!state.loadedMap) {
       this._mapController = controller;
 
-      this._mapController.setMapStyle(jsonEncode(colliersCanadaMap));
+      this._mapController.setMapStyle(jsonEncode(uberMapTheme));
 
       add(OnLoadedMap());
     }
@@ -51,6 +55,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       yield* _onFollowLocation(event);
     } else if (event is OnMapMoved) {
       yield state.copyWith(centralLocation: event.mapCenter);
+    } else if (event is OnCreateRouteStartEnd) {
+      yield* _onCreateRouteStartEnd(event);
     }
   }
 
@@ -87,5 +93,14 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       this.moveCamera(this._myRoute.points[this._myRoute.points.length - 1]);
     }
     yield state.copyWith(followLocation: !state.followLocation);
+  }
+
+  Stream<MapState> _onCreateRouteStartEnd(OnCreateRouteStartEnd event) async* {
+    this._myDestinationRoute =
+        this._myDestinationRoute.copyWith(pointsParam: event.coordsRoute);
+    final currentPolylines = state.polylines;
+
+    currentPolylines['myDestinationRoute'] = this._myDestinationRoute;
+    yield state.copyWith(polylines: currentPolylines);
   }
 }
