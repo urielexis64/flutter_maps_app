@@ -80,9 +80,12 @@ class _BuildManualMarker extends StatelessWidget {
   }
 
   void calculateDestination(BuildContext context) async {
+    calculateAlert(context);
+
+    final mapBloc = context.read<MapBloc>();
     final trafficService = TrafficService();
     final start = context.read<MyLocationBloc>().state.location;
-    final end = context.read<MapBloc>().state.centralLocation;
+    final end = mapBloc.state.centralLocation;
     final trafficResponse = await trafficService.getCoords(start, end!);
 
     final geometry = trafficResponse.routes[0].geometry;
@@ -91,7 +94,12 @@ class _BuildManualMarker extends StatelessWidget {
 
     // Decode geometry points
     final points = Poly.PolylinePoints().decodePolyline(geometry);
+    final List<LatLng> coordsRoute =
+        points.map((point) => LatLng(point.latitude, point.longitude)).toList();
+    print(coordsRoute);
+    mapBloc.add(OnCreateRouteStartEnd(coordsRoute, distance, duration));
 
-    final temp = points;
+    Navigator.pop(context);
+    context.read<SearchBloc>().add(OnManualMarkerDeactivated());
   }
 }
